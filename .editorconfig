@@ -1,0 +1,46 @@
+# http://editorconfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+charset = utf-8
+trim_trailing_whitespace = true
+end_of_line = lf
+insert_final_newline = true
+indent_style = tab
+indent_size = 8
+
+[*.go]
+indent_style = tab
+indent_size = 4
+
+# C/C++: tab indentation, 4 spaces
+[*.{c,h,cpp,hpp,c++,h++,cc,hh}]
+indent_style = tab
+tab_width = 4
+
+# Makefiles: tab indentation (no size specified)
+[{Makefile,Makefile.*,*.make}]
+indent_style = tab
+
+[*.py]
+line_length=120
+indent_style = space
+indent_size = 4
+
+[*.{js,jsx,ts,tsx,vue,svelte}]
+indent_style = space
+indent_size = 2
+
+[*.{html,css,scss}]
+indent_style = space
+indent_size = 2
+
+[*.{json,yml,yaml}]
+indent_style = space
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false

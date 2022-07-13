@@ -1,0 +1,45 @@
+# system files
+._*
+.DS_Store
+
+# backup files
+*.bak
+*~
+
+# IDE files
+*.sublime‐project
+*.sublime‐workspace
+/.idea/
+.vscode/
+*.xcodeproj/
+
+# object files, executables, ...
+*.o
+*.a
+*.so
+*.ko
+*.pyc
+*.exe
+*.dll
+*.dylib
+*.lo
+*.la
+*.dSYM/
+
+# docker / compose environment files
+.env
+.env.*
+
+# Generated
+*.pb.go
+*.pb.gw.go
+
+# Go cross-compiled binaries
+/dist/
+
+# Go vendored packages
+/vendor/
+
+# Binaries
+/bin/
+/*.exe
