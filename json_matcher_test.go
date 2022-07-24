@@ -69,6 +69,10 @@ func TestJsonStringMatches(t *testing.T) {
 			j:     `123.52`,
 			jSpec: `"#number"`,
 		}, want: true},
+		{name: "number-spec-wrongtype", args: args{
+			j:     `"hello"`,
+			jSpec: `"#number"`,
+		}, want: false},
 		{name: "string-eq", args: args{
 			j:     `"the quick brown fox"`,
 			jSpec: `"the quick brown fox"`,
@@ -89,6 +93,10 @@ func TestJsonStringMatches(t *testing.T) {
 			j:     `""`,
 			jSpec: `"#string"`,
 		}, want: true},
+		{name: "string-spec-wrongtype", args: args{
+			j:     `123.52`,
+			jSpec: `"#string"`,
+		}, want: false},
 		{name: "array-eq", args: args{
 			j:     `[ true, 42, 5.52, "hello" ]`,
 			jSpec: `[ true, 42, 5.52, "hello" ]`,
@@ -311,6 +319,10 @@ func TestJsonStringMatches(t *testing.T) {
 			j:     `"gosh-a30ae5f3-818a-4b29-8815-320f8561021a"`,
 			jSpec: `"#uuid"`,
 		}, want: false},
+		{name: "uuid-spec-wrongtype", args: args{
+			j:     `123.52`,
+			jSpec: `"#uuid"`,
+		}, want: false},
 		{name: "uuid-v4-spec-v4", args: args{
 			j:     `"a5bf6b35-61b2-4187-8396-463a3d6c742b"`,
 			jSpec: `"#uuid-v4"`,
@@ -325,6 +337,10 @@ func TestJsonStringMatches(t *testing.T) {
 		}, want: false},
 		{name: "uuid-v4-spec-fail-2", args: args{
 			j:     `"gosh-a30ae5f3-818a-4b29-8815-320f8561021a"`,
+			jSpec: `"#uuid-v4"`,
+		}, want: false},
+		{name: "uuid-v4-spec-wrongtype", args: args{
+			j:     `123.52`,
 			jSpec: `"#uuid-v4"`,
 		}, want: false},
 		{name: "regex-spec", args: args{
