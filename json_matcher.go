@@ -30,34 +30,34 @@ func init() {
 
 // JSONMatches checks if the JSON in `j` provided with the first argument
 // satisfies the pattern in the second argument.
-// Both `j` and `jSpec` are passed as byte slices.
+// Both `j` and `jPatternSpecifier` are passed as byte slices.
 // The pattern can be a valid literal value (in that case an exact match will
 // be required), a special marker (a string starting with the hash character
 // '#'), or any combination of these via arrays and objects.
-func JSONMatches(j []byte, jSpec []byte) (bool, error) {
+func JSONMatches(j []byte, jPatternSpecifier []byte) (bool, error) {
 	var jAny interface{}
 	err := json.Unmarshal(j, &jAny)
 	if err != nil {
 		return false, fmt.Errorf("can't unmarshal left argument: %w", err)
 	}
 
-	var specAny interface{}
-	err = json.Unmarshal(jSpec, &specAny)
+	var patternSpecAny interface{}
+	err = json.Unmarshal(jPatternSpecifier, &patternSpecAny)
 	if err != nil {
-		return false, fmt.Errorf("can't unmarshal specifier argument: %w", err)
+		return false, fmt.Errorf("can't unmarshal pattern argument: %w", err)
 	}
 
-	return _match(jAny, specAny)
+	return _match(jAny, patternSpecAny)
 }
 
 // JSONStringMatches checks if the JSON string `j` provided with the first argument
 // satisfies the pattern in the second argument.
-// Both `j` and `jSpec` are passed as strings.
+// Both `j` and `jPatternSpecifier` are passed as strings.
 // The pattern can be a valid literal value (in that case an exact match will
 // be required), a special marker (a string starting with the hash character
 // '#'), or any combination of these via arrays and objects.
-func JSONStringMatches(j string, jSpec string) (bool, error) {
-	return JSONMatches([]byte(j), []byte(jSpec))
+func JSONStringMatches(j string, jPatternSpecifier string) (bool, error) {
+	return JSONMatches([]byte(j), []byte(jPatternSpecifier))
 }
 
 func _matchZero(x interface{}) (bool, error) {
@@ -78,8 +78,8 @@ const (
 )
 
 //nolint:funlen,gocognit // reducing the number of statements would reduce legibility in this instance
-func _matchWithSpecifier(x interface{}, spec string) (bool, error) {
-	if x == nil && (spec == ignoreMarker || spec == nullMarker || spec == presentMarker) {
+func _matchWithMarker(x interface{}, marker string) (bool, error) {
+	if x == nil && (marker == ignoreMarker || marker == nullMarker || marker == presentMarker) {
 		return true, nil
 	}
 	xV := reflect.ValueOf(x)
@@ -88,9 +88,9 @@ func _matchWithSpecifier(x interface{}, spec string) (bool, error) {
 	}
 
 	//nolint:gomnd // the "magic" literal constant 2 here is clearer than a synthetic constant symbol
-	specParts := strings.SplitN(spec, " ", 2)
+	markerParts := strings.SplitN(marker, " ", 2)
 
-	switch specParts[0] {
+	switch markerParts[0] {
 	case ignoreMarker:
 		return true, nil
 	case nullMarker:
@@ -191,10 +191,10 @@ func _matchWithSpecifier(x interface{}, spec string) (bool, error) {
 		return false, nil
 	case "#regex":
 		//nolint:gomnd // the "magic" literal constant 2 here is clearer than a synthetic constant symbol
-		if len(specParts) != 2 {
+		if len(markerParts) != 2 {
 			return false, fmt.Errorf("expected exactly one argument for #regex")
 		}
-		r, err := regexp.Compile(specParts[1])
+		r, err := regexp.Compile(markerParts[1])
 		if err != nil {
 			return false, fmt.Errorf("invalid regex argument to #regex: %w", err)
 		}
@@ -209,7 +209,7 @@ func _matchWithSpecifier(x interface{}, spec string) (bool, error) {
 		// TODO: "#[num] EXPR"
 	}
 
-	return false, fmt.Errorf("unsupported specifier '%s'", spec)
+	return false, fmt.Errorf("unsupported pattern '%s'", marker)
 }
 
 func _match(x interface{}, spec interface{}) (bool, error) {
@@ -221,7 +221,7 @@ func _match(x interface{}, spec interface{}) (bool, error) {
 	if specV.Kind() == reflect.String {
 		isMarker, specMarker := getMarker(spec)
 		if isMarker {
-			return _matchWithSpecifier(x, specMarker)
+			return _matchWithMarker(x, specMarker)
 		}
 	}
 
@@ -247,7 +247,7 @@ func _matchMap(x interface{}, y interface{}) (bool, error) {
 		return false, fmt.Errorf("wrong kind for left value, expected Map, got %v", vX.Kind())
 	}
 	if reflect.ValueOf(y).Kind() != reflect.Map {
-		return false, fmt.Errorf("wrong kind for specifier value, expected Map, got %v", vX.Kind())
+		return false, fmt.Errorf("wrong kind for pattern value, expected Map, got %v", vX.Kind())
 	}
 
 	vY := reflect.ValueOf(y)
@@ -347,7 +347,7 @@ func _matchSlice(x interface{}, y interface{}) (bool, error) {
 		return false, fmt.Errorf("wrong kind for left value, expected Slice, got %v", vX.Kind())
 	}
 	if reflect.ValueOf(y).Kind() != reflect.Slice {
-		return false, fmt.Errorf("wrong kind for specifier value, expected Slice, got %v", vX.Kind())
+		return false, fmt.Errorf("wrong kind for pattern value, expected Slice, got %v", vX.Kind())
 	}
 
 	vY := reflect.ValueOf(y)
