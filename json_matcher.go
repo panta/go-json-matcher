@@ -28,25 +28,36 @@ func init() {
 	}
 }
 
-// JSONMatches checks if the JSON string `j` provided with the first argument
+// JSONMatches checks if the JSON in `j` provided with the first argument
 // satisfies the pattern in the second argument.
+// Both `j` and `jSpec` are passed as byte slices.
 // The pattern can be a valid literal value (in that case an exact match will
 // be required), a special marker (a string starting with the hash character
 // '#'), or any combination of these via arrays and objects.
-func JSONMatches(j string, jSpec string) (bool, error) {
+func JSONMatches(j []byte, jSpec []byte) (bool, error) {
 	var jAny interface{}
-	err := json.Unmarshal([]byte(j), &jAny)
+	err := json.Unmarshal(j, &jAny)
 	if err != nil {
 		return false, fmt.Errorf("can't unmarshal left argument: %w", err)
 	}
 
 	var specAny interface{}
-	err = json.Unmarshal([]byte(jSpec), &specAny)
+	err = json.Unmarshal(jSpec, &specAny)
 	if err != nil {
 		return false, fmt.Errorf("can't unmarshal specifier argument: %w", err)
 	}
 
 	return _match(jAny, specAny)
+}
+
+// JSONStringMatches checks if the JSON string `j` provided with the first argument
+// satisfies the pattern in the second argument.
+// Both `j` and `jSpec` are passed as strings.
+// The pattern can be a valid literal value (in that case an exact match will
+// be required), a special marker (a string starting with the hash character
+// '#'), or any combination of these via arrays and objects.
+func JSONStringMatches(j string, jSpec string) (bool, error) {
+	return JSONMatches([]byte(j), []byte(jSpec))
 }
 
 func _matchZero(x interface{}) (bool, error) {

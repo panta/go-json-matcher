@@ -6,7 +6,7 @@ import (
 	matcher "github.com/panta/go-json-matcher"
 )
 
-func TestJsonMatches(t *testing.T) {
+func TestJsonStringMatches(t *testing.T) {
 	type args struct {
 		j     string
 		jSpec string
@@ -383,13 +383,13 @@ func TestJsonMatches(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := matcher.JSONMatches(tt.args.j, tt.args.jSpec)
+			got, err := matcher.JSONStringMatches(tt.args.j, tt.args.jSpec)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("JSONMatches() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("JSONStringMatches() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if got != tt.want {
-				t.Errorf("JSONMatches() got = %v, want %v", got, tt.want)
+				t.Errorf("JSONStringMatches() got = %v, want %v", got, tt.want)
 			}
 		})
 	}
