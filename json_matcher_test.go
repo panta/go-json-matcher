@@ -37,7 +37,7 @@ func TestJsonStringMatches(t *testing.T) {
 			j:     `true`,
 			jSpec: `"#boolean"`,
 		}, want: true},
-		{name: "bool-spec-notboolean", args: args{
+		{name: "bool-spec-wrongtype", args: args{
 			j:     `"hello"`,
 			jSpec: `"#boolean"`,
 		}, want: false},
@@ -133,7 +133,7 @@ func TestJsonStringMatches(t *testing.T) {
 			j:     `[]`,
 			jSpec: `"#array"`,
 		}, want: true},
-		{name: "array-spec-notarray", args: args{
+		{name: "array-spec-wrongtype", args: args{
 			j:     `5`,
 			jSpec: `"#array"`,
 		}, want: false},
@@ -189,7 +189,7 @@ func TestJsonStringMatches(t *testing.T) {
 			j:     `{}`,
 			jSpec: `"#object"`,
 		}, want: true},
-		{name: "object-spec-notobject", args: args{
+		{name: "object-spec-wrongtype", args: args{
 			j:     `5`,
 			jSpec: `"#object"`,
 		}, want: false},
@@ -359,7 +359,7 @@ func TestJsonStringMatches(t *testing.T) {
 			j:     `"This is fun"`,
 			jSpec: `"#regex +*{3a"`,
 		}, want: false, wantErr: true},
-		{name: "regex-spec-notstring", args: args{
+		{name: "regex-spec-wrongtype", args: args{
 			j:     `42`,
 			jSpec: `"#regex ^This is [a-z]{3}$"`,
 		}, want: false},
