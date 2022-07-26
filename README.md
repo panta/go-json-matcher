@@ -1,8 +1,9 @@
 # JSON Matcher
 
-[![](https://img.shields.io/github/workflow/status/panta/go-json-matcher/Test?longCache=tru&label=Test&logo=github%20actions&logoColor=fff)](https://github.com/panta/go-json-matcher/actions?query=workflow%3ATest)
+[![tag](https://img.shields.io/github/tag/panta/go-json-matcher.svg)](https://github.com/panta/go-json-matcher/releases)
 [![Go Reference](https://pkg.go.dev/badge/github.com/panta/go-json-matcher.svg)](https://pkg.go.dev/github.com/panta/go-json-matcher)
-[![Go Report Card](https://goreportcard.com/badge/github.com/panta/go-json-matcher)](https://goreportcard.com/report/github.com/panta/go-json-matcher)
+![Build Status](https://github.com/panta/go-json-matcher/actions/workflows/test.yml/badge.svg)
+[![Go report](https://goreportcard.com/badge/github.com/panta/go-json-matcher)](https://goreportcard.com/report/github.com/panta/go-json-matcher)
 
 JSON Matcher is a Go (_golang_) library to verify conformance of JSON objects to a
 desired structure, according to provided patterns.
