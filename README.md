@@ -31,7 +31,7 @@ For example, suppose you have a JSON API response like the following:
 you could check the above structure with (error checks omitted here for brevity, you should check errors in actual code):
 
 ```go
-matches, _ := matcher.JSONMatches(responseString, `{
+matches, _ := matcher.JSONStringMatches(responseString, `{
   "id": "#uuid",
   "title": "#string",
   "body": "#string",
@@ -64,11 +64,13 @@ import "github.com/panta/go-json-matcher"
 
 ## 💡 Usage
 
-The function `JSONMatches()` checks that the JSON string provided with the first
+The function `JSONStringMatches()` checks that the JSON string provided with the first
 argument satisfies the pattern specified with the second argument.
 The pattern can be a valid literal value (in that case an exact match will be required),
 a special marker beginning with a `#` character as described below, or any combination
 of these via arrays and objects.
+
+When checking a byte slice you can use `JSONMatches()` instead.
 
 ### Supported markers
 
