@@ -48,7 +48,7 @@ if !matches {
 }
 ```
 
-## Install
+## 🚀 Install
 
 Using JSON Matcher is easy. Use `go get` to install the latest version of the library:
 
@@ -62,7 +62,7 @@ then import the library in you application:
 import "github.com/panta/go-json-matcher"
 ```
 
-## Usage
+## 💡 Usage
 
 The function `JSONMatches()` checks that the JSON string provided with the first
 argument satisfies the pattern specified with the second argument.
